@@ -44,8 +44,8 @@ export default function Home() {
             <input
               id="ticket"
               type="file"
-              accept="image/png,image/jpeg"
-              onChange={handleFileChange}
+              accept="image/png,image/jpeg" //que solo acepte los archivos que el dispositivo acepte
+              onChange={handleFileChange} 
               className="hidden"
             />
           </label>
