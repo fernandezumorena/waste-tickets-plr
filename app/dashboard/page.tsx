@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { createClient } from "@supabase/supabase-js";
 
-// 1. Conexión con Supabase del arch env local
+// 1. Conexión con Supabase del arch env local - claves de acceso a la base de datos-
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
 const supabase = createClient(supabaseUrl, supabaseAnonKey);
@@ -17,10 +17,11 @@ interface Gasto {
   total: number;
 }
 
+// Función principal del dashboard realiza la conexión con la base de datos y muestra los datos en la pantalla
 export default function Dashboard() {
-  const [gastos, setGastos] = useState<Gasto[]>([]);
-  const [cargando, setCargando] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const [gastos, setGastos] = useState<Gasto[]>([]); // Estado para almacenar los gastos
+  const [cargando, setCargando] = useState(true); //Estado para controlar el estado de carga
+  const [error, setError] = useState<string | null>(null); //Estado para controlar los errores
 
   // 2. Al cargar la página, se busca los datos
   useEffect(() => {
