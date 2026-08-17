@@ -39,3 +39,10 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# OCR: modelo de idioma que descarga Tesseract (pesa varios MB, no va al repo)
+*.traineddata
+
+# OCR: fotos de prueba usadas para testear el reconocimiento de tickets
+ticket*.jpeg
+ticket*.jpg
