@@ -37,8 +37,17 @@ function normalizarMonto(bruto: string): number | null {
   return isNaN(numero) ? null : numero;
 }
 
+// A veces el OCR agrega un espacio de más justo después de la coma o el
+// punto decimal (ej: "73625, 75" en vez de "73625,75"), y eso hace que el
+// monto se corte antes de leer los decimales. Sacamos esos espacios antes
+// de intentar reconocer el número.
+function limpiarEspaciosEnMontos(texto: string): string {
+  return texto.replace(/(\d)([.,])\s+(\d)/g, "$1$2$3");
+}
+
 function extraerMonto(texto: string): number | null {
-  const match = texto.match(MONTO_REGEX);
+  const limpio = limpiarEspaciosEnMontos(texto);
+  const match = limpio.match(MONTO_REGEX);
   if (!match) return null;
   return normalizarMonto(match[1]);
 }
@@ -159,11 +168,12 @@ export function interpretarTicket(textoCrudo: string): DatosTicket {
   }
 
   if (total === 0) {
+    const textoParaMontos = limpiarEspaciosEnMontos(textoCrudo);
     MONTO_REGEX_GLOBAL.lastIndex = 0;
     const montos: number[] = [];
     let match: RegExpExecArray | null;
 
-    while ((match = MONTO_REGEX_GLOBAL.exec(textoCrudo)) !== null) {
+    while ((match = MONTO_REGEX_GLOBAL.exec(textoParaMontos)) !== null) {
       const numero = normalizarMonto(match[1]);
       if (numero !== null && numero > 0) montos.push(numero);
     }

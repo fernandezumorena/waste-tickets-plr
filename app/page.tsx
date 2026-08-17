@@ -196,6 +196,23 @@ export default function Home() {
                   }
                   className="mt-1 w-full rounded-lg border border-gray-300 px-4 py-2 text-gray-900 bg-white"
                 />
+
+                {datos.medioPago === "No detectado" && (
+                  <div className="mt-2 flex gap-2">
+                    {["Tarjeta", "Digital", "Efectivo"].map((opcion) => (
+                      <button
+                        key={opcion}
+                        type="button"
+                        onClick={() =>
+                          setDatos({ ...datos, medioPago: opcion })
+                        }
+                        className="rounded-full border border-gray-300 px-3 py-1 text-sm text-gray-700 transition hover:bg-gray-100"
+                      >
+                        {opcion}
+                      </button>
+                    ))}
+                  </div>
+                )}
               </div>
             </div>
 
