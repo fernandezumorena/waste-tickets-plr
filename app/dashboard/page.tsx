@@ -15,13 +15,14 @@ interface Gasto {
   comercio: string;
   categoria: string;
   total: number;
+  medio_de_pago: string;
 }
 
 // Función principal del dashboard realiza la conexión con la base de datos y muestra los datos en la pantalla
 export default function Dashboard() {
-  const [gastos, setGastos] = useState<Gasto[]>([]); // Estado para almacenar los gastos
-  const [cargando, setCargando] = useState(true); //Estado para controlar el estado de carga
-  const [error, setError] = useState<string | null>(null); //Estado para controlar los errores
+  const [gastos, setGastos] = useState<Gasto[]>([]); 
+  const [cargando, setCargando] = useState(true); 
+  const [error, setError] = useState<string | null>(null); 
 
   // 2. Al cargar la página, se busca los datos
   useEffect(() => {
@@ -30,7 +31,7 @@ export default function Dashboard() {
         const { data, error } = await supabase
           .from("gastos")
           .select("*")
-          .order("fecha", { ascending: false }); // Los más nuevos primero
+          .order("fecha", { ascending: false });
 
         if (error) throw error;
         setGastos(data || []);
@@ -50,32 +51,32 @@ export default function Dashboard() {
   // 4. Pantalla de carga mientras trae los datos de la nube
   if (cargando) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50">
-        <p className="text-xl font-semibold text-gray-500 animate-pulse">Consultando la bóveda... 💸</p>
+      <div className="min-h-screen flex items-center justify-center bg-pink-50 font-serif">
+        <p className="text-xl font-semibold text-pink-500 animate-pulse">Consultando la bóveda... 💸</p>
       </div>
     );
   }
 
-  // 5. El diseño visual principal (Frontend)
+  // 5. El diseño visual principal (Frontend modificado a Rosa y Blanco)
   return (
-    <main className="min-h-screen bg-gray-50 p-8 font-sans">
+    <main className="min-h-screen bg-pink-50 p-8 font-serif">
       <div className="max-w-4xl mx-auto space-y-8">
         
         {/* Encabezado */}
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">Panel de Control</h1>
-          <p className="text-gray-500">Analista de Gastos y Tickets</p>
+          <h1 className="text-3xl font-bold text-pink-900">Panel de Control</h1>
+          <p className="text-pink-600">Analista de Gastos y Tickets</p>
         </div>
 
         {/* Tarjeta de Total */}
-        <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex items-center justify-between">
+        <div className="bg-white p-6 rounded-2xl shadow-sm border border-pink-100 flex items-center justify-between">
           <div>
-            <p className="text-sm font-medium text-gray-500 uppercase tracking-wider">Total Gastado</p>
-            <p className="text-4xl font-bold text-blue-600 mt-1">
+            <p className="text-sm font-medium text-pink-400 uppercase tracking-wider">Total Gastado</p>
+            <p className="text-4xl font-bold text-pink-600 mt-1">
               ${totalGastado.toFixed(2)}
             </p>
           </div>
-          <div className="bg-blue-100 p-4 rounded-full">
+          <div className="bg-pink-100 p-4 rounded-full">
             <span className="text-2xl">📊</span>
           </div>
         </div>
@@ -88,32 +89,38 @@ export default function Dashboard() {
         )}
 
         {/* Tabla de Gastos */}
-        <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
-          <table className="min-w-full divide-y divide-gray-200">
-            <thead className="bg-gray-50">
+        <div className="bg-white rounded-2xl shadow-sm border border-pink-100 overflow-hidden">
+          <table className="min-w-full divide-y divide-pink-100">
+            <thead className="bg-pink-100">
               <tr>
-                <th className="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase">Fecha</th>
-                <th className="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase">Comercio</th>
-                <th className="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase">Categoría</th>
-                <th className="px-6 py-4 text-right text-xs font-semibold text-gray-500 uppercase">Total</th>
+                <th className="px-6 py-4 text-left text-xs font-semibold text-pink-700 uppercase">Fecha</th>
+                <th className="px-6 py-4 text-left text-xs font-semibold text-pink-700 uppercase">Comercio</th>
+                <th className="px-6 py-4 text-left text-xs font-semibold text-pink-700 uppercase">Categoría</th>
+                <th className="px-6 py-4 text-left text-xs font-semibold text-pink-700 uppercase">Medio de Pago</th>
+                <th className="px-6 py-4 text-right text-xs font-semibold text-pink-700 uppercase">Total</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-gray-200 bg-white">
+            <tbody className="divide-y divide-pink-50 bg-white">
               {gastos.length === 0 ? (
                 <tr>
-                  <td colSpan={4} className="px-6 py-8 text-center text-gray-500">
+                  <td colSpan={5} className="px-6 py-8 text-center text-pink-400">
                     Aún no hay tickets cargados. ¡Es hora de escanear!
                   </td>
                 </tr>
               ) : (
                 gastos.map((gasto) => (
-                  <tr key={gasto.id} className="hover:bg-gray-50 transition-colors">
-                    <td className="px-6 py-4 text-sm text-gray-900">{new Date(gasto.fecha).toLocaleDateString()}</td>
-                    <td className="px-6 py-4 text-sm font-medium text-gray-900">{gasto.comercio}</td>
-                    <td className="px-6 py-4 text-sm text-gray-500">
-                      <span className="bg-gray-100 px-2 py-1 rounded-md text-xs">{gasto.categoria}</span>
+                  <tr key={gasto.id} className="hover:bg-pink-50 transition-colors">
+                    <td className="px-6 py-4 text-sm text-pink-900">{new Date(gasto.fecha).toLocaleDateString()}</td>
+                    <td className="px-6 py-4 text-sm font-medium text-pink-900">{gasto.comercio}</td>
+                    <td className="px-6 py-4 text-sm text-pink-500">
+                      <span className="bg-pink-50 px-2 py-1 rounded-md text-xs border border-pink-100">{gasto.categoria}</span>
                     </td>
-                    <td className="px-6 py-4 text-sm font-bold text-gray-900 text-right">
+                    <td className="px-6 py-4 text-sm text-pink-500">
+                      <span className="bg-white text-pink-600 px-2 py-1 rounded-md text-xs border border-pink-200">
+                        {gasto.medio_de_pago || 'No especificado'}
+                      </span>
+                    </td>
+                    <td className="px-6 py-4 text-sm font-bold text-pink-900 text-right">
                       ${Number(gasto.total).toFixed(2)}
                     </td>
                   </tr>
